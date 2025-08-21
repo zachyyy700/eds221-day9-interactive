@@ -1,0 +1,37 @@
+---
+title: "table_practice"
+author: "zachyloo"
+format: html
+editor: visual
+---
+
+```{r}
+#| echo: false
+pacman::p_load("kableExtra", "tidyverse")
+```
+
+```{r} 
+#| echo: false
+whales <- data.frame(
+  stringsAsFactors = FALSE,
+              date = c("8/12/2014","8/13/2014",
+                       "8/15/2014","8/16/2014","8/16/2014"),
+              site = c("channel", "channel", "harbor", "channel", "channel"),
+               spp = c("unknown", "gray", "gray", "humpback", "gray"),
+            dist_m = c(400L, 200L, 60L, 300L, 150L),
+          behavior = c("breach", "spout", "spout", "feeding", "feeding")
+)
+
+# meh table
+whales
+```
+
+```{r}
+# nice kable table for rendering
+whales |> 
+  kable(col.names = c("Date", "Site", "Species", "Distance (m)", "Behavior")) |>  # update col names 
+  kable_classic_2() |> # table themes!
+  column_spec(3, bold = TRUE, background = "lightblue") |> 
+  add_header_above(c(" ", "A header" = 2, "Another header" = 2))
+```
+

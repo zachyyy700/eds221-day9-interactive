@@ -1,0 +1,81 @@
+---
+title: "reprex_practice"
+author: "zachyloo"
+date: "2025-08-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+pacman::p_load("tidyverse", "kableExtra", "palmerpenguins", "reprex")
+```
+
+# Troubleshooting/reprex
+Create some code that'll throw an error
+```{r}
+# assume more workflow above this chunk
+ggplot(penguins, x = flipper_length_mm, y = body_mass_g) +
+  geom_point()
+```
+
+Need to create some code to seek help debugging
+```{r}
+# subset penguins to just data needed to get the error
+penguins_subset <- penguins |> 
+  select(flipper_length_mm, body_mass_g) |> 
+  slice_head(n = 5) # 'slice' first 5 rows of penguins
+# would want to go back and confim getting same error
+
+# create data pasta
+datapasta::df_paste(penguins_subset)
+
+# created!
+data.frame(
+  flipper_length_mm = c(181L, 186L, 195L, NA, 193L),
+        body_mass_g = c(3750L, 3800L, 3250L, NA, 3450L)
+   )
+
+# CREATE REPREX (what we share)
+library(tidyverse)
+penguins <- data.frame(
+  flipper_length_mm = c(181L, 186L, 195L, NA, 193L),
+        body_mass_g = c(3750L, 3800L, 3250L, NA, 3450L)
+   )
+ggplot(penguins, x = flipper_length_mm, y = body_mass_g) +
+  geom_point() # error still there, reprex created.
+```
+
+Creating actual reprex (select made reprex, copy to clipboard, and run 'reprex()' in console)
+
+Practice example
+```{r}
+starwars <- starwars
+gender_count <- table(starwars$gender)
+ggplot(data = starwars, aes(x = gender, y = gender_count)) +
+  geom_bar()
+
+# reprex process below:
+starwars_subset <- starwars |> 
+  select(gender) |> 
+  slice_head(n = 10)
+
+datapasta::df_paste(starwars_subset)
+
+# reprex here
+library(tidyverse)
+starwars <- data.frame(
+  stringsAsFactors = FALSE,
+               gender = c("masculine","masculine",
+                          "masculine","masculine","feminine","masculine",
+                          "feminine","masculine","masculine","masculine"))
+
+gender_count <- table(starwars$gender)
+
+ggplot(data = starwars, aes(x = gender, y = gender_count)) +
+  geom_bar()
+
+```
+
